@@ -39,28 +39,12 @@ jobs:
         python3 -m pip install --upgrade pip
         pip3 install -r requirements.txt
 
-    - name: Install Munki
-      run: |
-        curl -L ${{ env.MUNKI_URL }} --output /tmp/munkitools.pkg
-        echo "${{ env.MUNKI_SHA256 }} */tmp/munkitools.pkg" | shasum -c
-        if [[ $? != "0" ]]; then exit 1; fi
-        sudo installer -pkg /tmp/munkitools.pkg -target /
-
     - name: Install AutoPkg
       run: |
         curl -L ${{ env.AUTOPKG_URL }} --output /tmp/autopkg.pkg
         echo "${{ env.AUTOPKG_SHA256 }} */tmp/autopkg.pkg" | shasum -c
         if [[ $? != "0" ]]; then exit 1; fi
         sudo installer -pkg /tmp/autopkg.pkg -target /
-
-    - name: Checkout your Munki LFS repo
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 #v4.1.1
-      with:
-        repository: replace_with_your_munki_repo
-        # GitHub deploy key with read/write access to repo
-        ssh-key: ${{ secrets.CPE_MUNKI_LFS_DEPLOY_KEY }}
-        fetch-depth: 1
-        path: munki_repo
 
     - name: Configure AutoPkg and Git
       run: |
@@ -92,6 +76,12 @@ jobs:
       env:
         RECIPE: ${{ github.event.inputs.recipe }}
         SLACK_WEBHOOK_TOKEN: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      -name: Run Jamf_Uploader
+       run: |
+         defaults write ~/Library/Preferences/com.github.autopkg.plist JSS_URL "https://near.jamfcloud.com"
+         defaults write ~/Library/Preferences/com.github.autopkg.plist API_USERNAME autopkg
+         defaults write ~/Library/Preferences/com.github.autopkg.plist API_PASSWORD BHG8ftw_nyc-xpr9nvr
 
     - name: Create Trust Info pull request
       if: env.TITLE
