@@ -78,7 +78,7 @@ jobs:
         SLACK_WEBHOOK_TOKEN: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     - name: Run Jamf_Uploader
-       run: |
+      run: |
          defaults write ~/Library/Preferences/com.github.autopkg.plist JSS_URL "https://near.jamfcloud.com"
          defaults write ~/Library/Preferences/com.github.autopkg.plist API_USERNAME autopkg
          defaults write ~/Library/Preferences/com.github.autopkg.plist API_PASSWORD BHG8ftw_nyc-xpr9nvr
