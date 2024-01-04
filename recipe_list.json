@@ -1,4 +1,4 @@
 [
-  "GoogleChrome.install.recipe",
-  "Firefox.munki.recipe"
+  "Firefox.munki.recipe",
+  "GoogleChrome.install.recipe"
 ]
