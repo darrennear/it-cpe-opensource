@@ -1,3 +1,4 @@
 [
-  "Firefox.munki.recipe"
+  "Firefox.munki.recipe",
+  "GoogleChrome-pkg-upload.jamf-test"
 ]
